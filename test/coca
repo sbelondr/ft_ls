@@ -1,0 +1,6 @@
+#!/bin/bash
+
+for f in {0..99}
+do
+mkdir $f
+done
