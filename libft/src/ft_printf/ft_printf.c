@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../../headers/ft_printf.h"
 
 void	ft_blank_list(t_printf **lst)
 {
@@ -24,6 +24,8 @@ void	ft_blank_list(t_printf **lst)
 	(*lst)->value = 0;
 	(*lst)->len = 0;
 	(*lst)->index = 0;
+	(*lst)->fd = 1;
+	(*lst)->color = 0;
 }
 
 void	ft_reset_value(t_printf **lst)
@@ -85,4 +87,66 @@ int		ft_printf(const char *format, ...)
 	ft_strdel(&(lst->format));
 	free(lst);
 	return (len);
+}
+
+int             ft_dprintf(int fd, const char *format, ...)                              
+{                                                                               
+	int                     len;                                            
+	t_printf        *lst;                                                   
+
+	if (ft_prepare(format, &lst) == 0)                                      
+		return (0);
+	lst->fd = fd;
+	va_start((lst)->ap, format);                                            
+	while (lst->format[lst->index])                                         
+	{                                                                       
+		if (lst->format[lst->index] == '%')                             
+		{                                                               
+			ft_reset_value(&lst);                                   
+			ft_manage(&lst);                                        
+		}                                                               
+		else                                                            
+		{                                                               
+			ft_putchar(lst->format[lst->index]);                    
+			lst->len++;                                             
+		}                                                               
+		lst->index++;                                                   
+	}                                                                       
+	va_end(lst->ap);                                                        
+	len = lst->len;                                                         
+	ft_strdel(&(lst->format));                                              
+	free(lst);                                                              
+	return (len);                                                           
+}
+
+
+int             ft_cprintf(int fd, int color, const char *format, ...)                     
+{                                                                               
+	int                     len;                                            
+	t_printf        *lst;                                                   
+
+	if (ft_prepare(format, &lst) == 0)                                      
+		return (0);                                                     
+	lst->fd = fd;
+	lst->color = color;
+	va_start((lst)->ap, format);                                            
+	while (lst->format[lst->index])                                         
+	{                                                                       
+		if (lst->format[lst->index] == '%')                             
+		{                                                               
+			ft_reset_value(&lst);                                   
+			ft_manage(&lst);                                        
+		}                                                               
+		else                                                            
+		{                                                               
+			ft_putchar(lst->format[lst->index]);                    
+			lst->len++;                                             
+		}                                                               
+		lst->index++;                                                   
+	}                                                                       
+	va_end(lst->ap);                                                        
+	len = lst->len;                                                         
+	ft_strdel(&(lst->format));                                              
+	free(lst);                                                              
+	return (len);                                                           
 }

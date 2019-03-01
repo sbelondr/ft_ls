@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../../headers/ft_printf.h"
 
 void	large_min_float(t_printf **lst, int len_str, int stock[3])
 {
@@ -84,9 +84,7 @@ void	ft_apply_arg_float(char (*str)[BUFF_S], t_printf **lst, int neg)
 	char	*tmp;
 	int		stock[3];
 	int		len_str;
-	int		option_zero;
 
-	option_zero = ft_strchr_exist((*lst)->options, '0');
 	ft_stock(&(*lst), (*str), &stock);
 	ft_inf_nan(&(*str), &(*lst), stock);
 	tmp = ft_precision_float(&(*str), &(*lst));

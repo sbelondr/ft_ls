@@ -13,10 +13,16 @@
 #	ifndef FT_PRINTF_H
 #	define FT_PRINTF_H
 
-#include "libft/headers/libft.h"
+#include "libft.h"
 #include <stdarg.h>
 #include <stdlib.h>
 #include <strings.h>
+#include <stdint.h>
+
+#define CL_RED "\033[0;31m"
+#define CL_GREEN "\033[0;32m"
+#define CL_BLUE "\033[0;34m"
+#define CL_RESET "\033[0m"
 
 typedef struct		s_printf
 {
@@ -30,6 +36,8 @@ typedef struct		s_printf
 	double			value;
 	int				len;
 	int				index;
+	int			fd;
+	int			color;
 }					t_printf;
 
 typedef uint64_t	t_u64;
@@ -45,6 +53,8 @@ char				ft_binary_to_char(t_u64 nb);
 ** ft_printf.c
 */
 int					ft_printf(const char *format, ...);
+int					ft_dprintf(int fd, const char *format, ...);
+int					ft_cprintf(int fd, int color, const char *format, ...);
 
 /*
 ** parser.c
@@ -105,6 +115,7 @@ void				ft_apply_arg_float(char (*str)[BUFF_S], t_printf **lst,
 */
 
 void				ft_display(char dst[BUFF_S], t_printf **lst);
+void				ft_display_color(char dst[BUFF_S], t_printf **lst);
 
 /*
 ** tools.c

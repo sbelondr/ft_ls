@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../../headers/ft_printf.h"
 
 void	tablo_calc(char (*tab)[BUFF_S], int base)
 {

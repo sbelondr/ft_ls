@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../../headers/ft_printf.h"
 
 char		ft_alpha(unsigned int nb)
 {

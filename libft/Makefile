@@ -40,13 +40,14 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@make -C src/ft_printf
-	@ar rc $(NAME) $(OBJ) src/ft_printf/*.o
+	@ar rc $(NAME) $(DIROBJ)/*.o
 	@echo "\033[36mlibft\033[0m $*: ar rc -> \033[32mOk\033[0m"
 	@ranlib $(NAME)
 	@echo "\033[36mlibft\033[0m $*: ranlib -> \033[32mOk\033[0m"
 
 $(DIROBJ)/%.o: $(DIRSRC)/%.c
 	@gcc -o $@ -Wall -Werror -Wextra -c $<
+	@echo "\033[36mlibft\033[0m $*: \033[32mOk\033[0m"
 
 clean:
 	@make -C src/ft_printf clean

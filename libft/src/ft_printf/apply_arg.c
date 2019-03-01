@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../../headers/ft_printf.h"
 
 void	ft_large_min(char (*dst)[BUFF_S], t_printf *lst, int stock[3])
 {

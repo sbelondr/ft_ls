@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../../headers/ft_printf.h"
 
 char	recup_char(t_printf **lst, int n)
 {
@@ -41,9 +41,6 @@ void	options(t_printf **lst)
 
 void	other_options(t_printf **lst)
 {
-	int	nb;
-
-	nb = 0;
 	if (ft_isdigit(recup_char(&(*lst), 0)))
 	{
 		(*lst)->large_min = ft_atoi((*lst)->format + (*lst)->index);

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../../headers/ft_printf.h"
 
 void		convert_type(t_printf **lst, char (*str)[BUFF_S], int base)
 {

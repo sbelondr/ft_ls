@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../../headers/ft_printf.h"
 
 /*
 ** https://ryanstutorials.net/binary-tutorial/binary-floating-point.php
@@ -18,12 +18,10 @@
 
 void	div_float(char (*tab)[BUFF_S], int d)
 {
-	int		i;
 	int		j;
 	int		stock[2];
 	char	result[BUFF_S];
 
-	i = -1;
 	if ((*tab)[0] == '0')
 		return ;
 	d += 1;

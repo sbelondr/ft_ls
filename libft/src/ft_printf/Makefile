@@ -25,19 +25,22 @@ STR = ft_printf.c \
 
 FILE = $(STR)
 
+DIROBJ = ../../obj
+
 NAME = libftprintf.a
 
-OBJ = $(FILE:%.c=%.o)
+OBJ = $(FILE:%.c=$(DIROBJ)/%.o)
 
-FLAGS = -Wall -Werror -Wextra
+FLAGS = -Wall -Wextra
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	@echo "\033[32mMake ok\033[0m"
 
-%.o: %.c
+$(DIROBJ)/%.o: %.c
 	@gcc $< $(FLAGS) -c -o $@
+	@echo "\033[36mft_printf\033[0m $*: \033[32mOk\033[0m"
 
 clean:
 	@rm -f $(OBJ)

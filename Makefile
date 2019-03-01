@@ -9,6 +9,8 @@ SRC = main.c \
 	  display.c \
 	  list_remove.c
 
+DIRSRC = src
+
 DIROBJ = obj
 
 HEAD = ft_ls.h
@@ -19,7 +21,7 @@ NAME = ft_ls
 
 OBJ = $(SRC:%.c=$(DIROBJ)/%.o)
 
-FLAG = -Wall -Werror -Wextra
+FLAG = -Wall -Wextra
 
 DEBUG = -g3
 
@@ -30,7 +32,7 @@ $(NAME): $(OBJ)
 	@gcc $(FLAG) $(DEBUG) $(OBJ) -o $(NAME) $(LIBRARY)
 
 
-$(DIROBJ)/%.o: %.c
+$(DIROBJ)/%.o: $(DIRSRC)/%.c
 	@gcc -o $@ $(FLAG) $(DEBUG) -c $<
 	@echo "\033[36mft_ls\033[0m $*: \033[32mOk\033[0m"
 

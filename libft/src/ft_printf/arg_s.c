@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../../headers/ft_printf.h"
 
 void	ft_arg_s(t_printf **lst)
 {
@@ -25,9 +25,7 @@ void	ft_arg_s(t_printf **lst)
 void	ft_arg_c(t_printf **lst)
 {
 	char	c;
-	char	is_null;
 
-	is_null = 'N';
 	if (!(c = (char)(va_arg((*lst)->ap, int))))
 	{
 		(*lst)->len += 1;
