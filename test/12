@@ -1,0 +1,17 @@
+mkdir dir12
+cd dir12
+mkdir adir zdir
+touch afile zfile
+ln -s adir asymdir
+ln -s adir zsymdir
+ln -s afile asymfile
+ln -s afile zsymfile
+
+cp ../../ft_ls .
+echo "=================="
+ls -1 adir zdir aNotExist zNotExistB afile zfile asymdir zsymdir asymfile zsymfile
+echo "=================="
+./ft_ls -1 adir zdir aNotExist zNotExistB afile zfile asymdir zsymdir asymfile zsymfile
+echo "=================="
+cd ..
+rm -rf dir12

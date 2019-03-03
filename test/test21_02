@@ -1,0 +1,15 @@
+mkdir dir_test21_02
+cd dir_test21_02
+
+mkdir a
+ln -s a b
+rm -rf a
+
+cp ../../ft_ls .
+echo "============"
+ls -1 b
+echo "============"
+./ft_ls -1 b
+echo "============"
+cd ..
+#rm -rf dir_test21_02

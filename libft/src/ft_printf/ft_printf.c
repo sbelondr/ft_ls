@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 17:39:03 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/02/21 22:03:31 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/03 12:13:31 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int             ft_dprintf(int fd, const char *format, ...)
 		}                                                               
 		else                                                            
 		{                                                               
-			ft_putchar(lst->format[lst->index]);                    
+			ft_putchar_fd(lst->format[lst->index], fd);                    
 			lst->len++;                                             
 		}                                                               
 		lst->index++;                                                   

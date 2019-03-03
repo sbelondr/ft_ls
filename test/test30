@@ -1,0 +1,18 @@
+mkdir dirTest30
+cd dirTest30
+
+mkdir dir{1..5} .hdir{1..5}
+touch dir1/file{1..5} dir1/.hfile{1..5}
+touch .hdir1/file{1..5} .hdir1/.hfile{1..5}
+touch .hdir1/file{1..5} .hdir1/.hfile{1..5}
+touch a && ln -s a symlink
+
+cp ../../ft_ls .
+
+echo "==============="
+ls -1l
+echo "==============="
+./ft_ls -l
+echo "==============="
+cd ..
+rm -rf dirTest30

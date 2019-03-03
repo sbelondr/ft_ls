@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 22:38:09 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/02/22 22:51:59 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/03 12:00:45 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,26 +77,23 @@ void	ft_sort_alph(t_save *sv, size_t len, int is_r)
 
 int		ft_timecmp(t_read *a, t_read *b, int is_r)
 {
-	struct timespec	*tm_a;
-	struct timespec	*tm_b;
+	struct timespec	tm_a;
+	struct timespec	tm_b;
 
-	tm_a = a->file_stat.st_mtime;
-	tm_b = b->file_stat.st_mtime;
-	
-	//tm_a = a->file_stat.st_mtimespec;
-	//tm_b = b->file_stat.st_mtimespec;
+	tm_a = a->file_stat.st_mtimespec;
+	tm_b = b->file_stat.st_mtimespec;
 	if (is_r == 0)
 	{
-		if (tm_a->tv_sec > tm_b->tv_sec)
+		if (tm_a.tv_sec > tm_b.tv_sec)
 			return (1);
-		else if (tm_a->tv_sec == tm_b->tv_sec)
+		else if (tm_a.tv_sec == tm_b.tv_sec)
 			return (ft_cmp_sort_alph(a->name, b->name, is_r));
 	}
 	else
 	{
-		if (tm_a->tv_sec < tm_b->tv_sec)
+		if (tm_a.tv_sec < tm_b.tv_sec)
 			return (1);
-		else if (tm_a->tv_sec == tm_b->tv_sec)
+		else if (tm_a.tv_sec == tm_b.tv_sec)
 			return (ft_cmp_sort_alph(a->name, b->name, is_r));
 	}
 	return (0);

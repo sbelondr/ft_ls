@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 09:21:06 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/02/25 22:08:25 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/03 18:04:30 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,32 +69,39 @@ void			ft_dirdel(DIR **check)
 	(*check) = NULL;
 }
 
-int			sort_options_is_exist(t_ls **ls, int len, int *srt_options)
+int				sort_options_is_exist(t_ls **ls, int index_option)
 {
-	int		i;
 	t_read	*r;
-	int		verif;
 	DIR		*check;
 
-	i = -1;
-	while (++i < len)
+	check = NULL;
+	if (index_option != -1 &&
+			(check = opendir((*ls)->options[index_option])) == NULL)
 	{
-		if (srt_options[i] != -1 &&
-				(check = opendir((*ls)->options[srt_options[i]])) == NULL)
+		if (!(r = (t_read*)malloc(sizeof(t_read) * 1)))
+			return (0);
+		if (stat((*ls)->options[index_option], &(r)->file_stat) < 0)
 		{
-			if (!(r = (t_read*)malloc(sizeof(t_read) * 1)))
-				break ;
-			if (stat((*ls)->options[srt_options[i]], &(r)->file_stat) < 0)
-			{
-				error_rep((*ls)->options[srt_options[i]]);
-				srt_options[i] = -1;
-			}
+			error_rep((*ls)->options[index_option]);
 			free(r);
 			r = NULL;
+			return (-1);
 		}
-		else if (check != NULL)
-			ft_dirdel(&check);
+		free(r);
+		r = NULL;
 	}
+	else if (check != NULL)
+		ft_dirdel(&check);
+	return (1);
+}
+
+int		open_file_options(t_ls **ls, int len, int *srt_options)
+{
+	int		i;
+	int		verif;
+	t_read	*r;
+	DIR		*check;
+
 	i = -1;
 	verif = 0;
 	while (++i < len)
@@ -113,11 +120,8 @@ int			sort_options_is_exist(t_ls **ls, int len, int *srt_options)
 			free(r);
 			r = NULL;
 		}
-		else if (check != NULL)
-		{
-			closedir(check);
-			check = NULL;
-		}
+		else if (srt_options[i] != -1 && check != NULL)
+			ft_dirdel(&check);
 	}
 	verif = parcours(&(*ls), len, srt_options, verif);
 	return (verif);
@@ -135,14 +139,14 @@ int		sort_alph(char *path_a, char *path_b)
 
 int		sort_t(struct stat info_a, struct stat info_b)
 {
-	struct timespec	*tm_a;
-	struct timespec	*tm_b;
+	struct timespec	tm_a;
+	struct timespec	tm_b;
 
-	tm_a = info_a.st_mtime;
-	tm_b = info_b.st_mtime;
-	if (tm_a->tv_sec < tm_b->tv_sec)
+	tm_a = info_a.st_mtimespec;
+	tm_b = info_b.st_mtimespec;
+	if (tm_a.tv_sec < tm_b.tv_sec)
 		return (1);
-	if (tm_a->tv_sec == tm_b->tv_sec)
+	if (tm_a.tv_sec == tm_b.tv_sec)
 		return (-1);
 	return (0);
 }
@@ -178,16 +182,44 @@ int		info_search(char *path_a, char *path_b, t_ls *ls)
 }
 
 /*
-** http://manpagesfr.free.fr/man/man2/stat.2.html
-*/
+ ** http://manpagesfr.free.fr/man/man2/stat.2.html
+ */
 
-int		sort_options(t_ls **ls, int len)
+int		sort_options(t_ls **ls, int len, int *srt_options)
 {
-	int		srt_options[len];
 	int		i;
-	int		j;
 	int		k;
 	int		stock;
+
+	k = -1;
+	while (++k < len)
+	{
+		i = -1;
+		while (++i < len - 1)
+		{
+			if (srt_options[i] != -1)
+			{
+				if (srt_options[i + 1] == -1 ||
+						info_search((*ls)->options[srt_options[i]],
+							(*ls)->options[srt_options[i + 1]], (*ls)))
+				{
+					stock = srt_options[i];
+					srt_options[i] = srt_options[i + 1];
+					srt_options[i + 1] = stock;
+				}
+			}
+		}
+	}
+	stock = open_file_options(&(*ls), len, srt_options);
+	return (stock);
+}
+
+int     first_sort_options(t_ls **ls, int len)
+{
+	int     srt_options[len];
+	int     i;
+	int     k;
+	int     stock;
 
 	i = -1;
 	while (++i < len)
@@ -196,22 +228,22 @@ int		sort_options(t_ls **ls, int len)
 	while (++k < len)
 	{
 		i = -1;
-		while (++i < len)
+		while (++i < len - 1)
 		{
-			j = i;
-			while (++j < len)
+			if (ft_strcmp((*ls)->options[srt_options[i]],
+						(*ls)->options[srt_options[i + 1]]) > 0)
 			{
-				if (info_search((*ls)->options[i],
-							(*ls)->options[srt_options[j]], (*ls)))
-				{
-					stock = srt_options[i];
-					srt_options[i] = srt_options[j];
-					srt_options[j] = stock;
-				}
+				stock = srt_options[i];
+				srt_options[i] = srt_options[i + 1];
+				srt_options[i + 1] = stock;
 			}
 		}
 	}
-	stock = sort_options_is_exist(&(*ls), len, srt_options);
+	i = -1;
+	while (++i < len)
+		if (sort_options_is_exist(&(*ls), srt_options[i]) == -1)
+			srt_options[i] = -1;
+	stock = sort_options(&(*ls), len, srt_options);
 	return (stock);
 }
 
@@ -229,7 +261,7 @@ int		ft_ls(int ac, char **av)
 		return (-1);
 	len = parser(ac, av, &ls);
 	check = (len < 1) ? 1 : len;
-	verif = sort_options(&ls, check);
+	verif = first_sort_options(&ls, check);
 	if (remove_ls(&ls, len) == -1)
 		return (-1);
 	return (verif);

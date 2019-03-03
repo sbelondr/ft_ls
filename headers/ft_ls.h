@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 12:45:34 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/02/25 21:57:48 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/03 12:00:25 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@
 #include <string.h>
 #include <uuid/uuid.h>
 #include <time.h>
-
-#define st_mtime st_mtim.tv_sec
 
 struct dirent*		readdir(DIR* repertoire);
 

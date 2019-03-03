@@ -1,0 +1,13 @@
+mkdir dir16
+cd dir16
+
+cp ../../ft_ls .
+
+echo "==========="
+ls -l ''
+echo "==========="
+./ft_ls -l ''
+echo "==========="
+
+cd ..
+rm -rf dir16

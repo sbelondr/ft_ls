@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/14 11:44:53 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/02/25 17:55:39 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/03 12:23:07 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,11 @@ void	display_read_l(t_read *r, int is_s, t_ls *ls)
 	ft_printf("%s", r->year_or_hours);
 	ft_putchar(' ');
 	if (r->perm[0] == 'd')
-		ft_printf("\033[1;34m%s/\033[0m", r->name);
+		ft_printf("%s", r->name);//ft_printf("\033[0;36m%s\033[0m", r->name);
 	else
 		ft_printf("%s", r->name);
 	if (r->perm[0] == 'l')
-		(r->symbolic_link) ? ft_printf(" -> %s", r->symbolic_link) : 0;
+		(r->symbolic_link[0] != '\0') ? ft_printf(" -> %s", r->symbolic_link) : 0;
 	ft_printf("\n");
 }
 
@@ -86,7 +86,7 @@ void	display_normal_mode(t_read *r, int is_s)
 	else
 	{
 		if (r->perm[0] == 'd')
-			ft_printf("\033[1;34m%s/\033[0m\n", r->name);
+			ft_printf("%s\n", r->name);//ft_printf("\033[0;36m%s\033[0m\n", r->name);
 		else
 			ft_printf("%s\n", r->name);
 	}
