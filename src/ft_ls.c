@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 09:21:06 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/03/03 18:04:30 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/04 09:46:21 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,13 @@ int				sort_options_is_exist(t_ls **ls, int index_option)
 			return (0);
 		if (stat((*ls)->options[index_option], &(r)->file_stat) < 0)
 		{
-			error_rep((*ls)->options[index_option]);
-			free(r);
-			r = NULL;
-			return (-1);
+			if (lstat((*ls)->options[index_option], &(r)->file_stat) < 0)
+			{
+				error_rep((*ls)->options[index_option]);
+				free(r);
+				r = NULL;
+				return (-1);
+			}
 		}
 		free(r);
 		r = NULL;
@@ -111,7 +114,8 @@ int		open_file_options(t_ls **ls, int len, int *srt_options)
 		{
 			if (!(r = (t_read*)malloc(sizeof(t_read) * 1)))
 				break ;
-			if (stat((*ls)->options[srt_options[i]], &(r)->file_stat) >= 0)
+			if (stat((*ls)->options[srt_options[i]], &(r)->file_stat) >= 0 ||
+				lstat((*ls)->options[srt_options[i]], &(r)->file_stat) >= 0)
 			{
 				insert_read_file(&(*ls), srt_options[i]);
 				srt_options[i] = -1;

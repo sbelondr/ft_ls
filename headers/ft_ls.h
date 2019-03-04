@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 12:45:34 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/03/03 12:00:25 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/04 10:47:42 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 #include <string.h>
 #include <uuid/uuid.h>
 #include <time.h>
+#include <sys/xattr.h>
 
 struct dirent*		readdir(DIR* repertoire);
 

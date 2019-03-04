@@ -7,9 +7,9 @@ rm -rf a
 
 cp ../../ft_ls .
 echo "============"
-ls -1 b
+ls -l b
 echo "============"
-./ft_ls -1 b
+./ft_ls -l b
 echo "============"
 cd ..
 rm -rf dir_test21_02

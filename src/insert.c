@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 10:49:40 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/02/25 21:05:09 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/04 16:13:10 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,45 +20,60 @@ void		recover_path(char (*path)[BUFF_S], t_ls *ls, int index)
 	ft_join(&(*path) , ls->read_file->d_name, 0);
 }
 
-char		type_file(t_ls *ls)
+char		type_file(t_read *r)
 {
-	int		type;
-
-	type = ls->read_file->d_type;
-	if (type == DT_DIR)
-		return ('d');
-	else if (type == DT_REG)
+	if (S_ISREG(r->file_stat.st_mode))
 		return ('-');
-	else if (type == DT_LNK)
+	else if (S_ISDIR(r->file_stat.st_mode))
+		return ('d');
+	else if (S_ISLNK(r->file_stat.st_mode))
 		return ('l');
-	else if (type == DT_BLK)
+	else if (S_ISBLK(r->file_stat.st_mode))
 		return ('b');
-	else if (type == DT_CHR)
+	else if (S_ISCHR(r->file_stat.st_mode))
 		return ('c');
-	else if (type == DT_SOCK)
+	else if (S_ISSOCK(r->file_stat.st_mode))
 		return ('s');
-	else if (type == DT_FIFO)
+	else if (S_ISFIFO(r->file_stat.st_mode))
 		return ('p');
 	else
 		return ('~');
 }
 
-void		make_perm(t_read **r, int folder, t_ls *ls)
+void		make_other_perm(t_read **r)
+{
+	int	i;
+	int	min;
+
+	i = 0;
+	min = 0;
+	while ((*r)->perm[++i])
+		if ((*r)->perm[i] != '-')
+		{
+			min = 1;
+			break ;
+		}
+	if (S_ISVTX & (*r)->file_stat.st_mode)
+		(*r)->perm[9] = (min) ? 't' : 'T';
+	if (S_ISGID & (*r)->file_stat.st_mode)
+		(*r)->perm[6] = (min) ? 's' : 'S';
+	if (S_ISUID & (*r)->file_stat.st_mode)
+		(*r)->perm[3] = (min) ? 's' : 'S';
+}
+
+void		make_perm(t_read **r, t_ls *ls)
 {
 	int		i;
 
 	i  = 1;
-	if (folder)
-		(*r)->perm[0] = type_file(ls);
-	else
-		(*r)->perm[0] = '-';
-	if ((*r)->perm[0] == 'l')
+	ft_bzero(&((*r)->symbolic_link), BUFF_S);
+	if ((ls->read_file && ls->read_file->d_type == DT_LNK) ||
+			S_ISLNK((*r)->file_stat.st_mode))
 	{
-		(lstat((*r)->path, &(*r)->file_stat) > 0) ? error_see() : 0;
-		readlink((*r)->path, (*r)->symbolic_link, BUFF_S);
+		(lstat((*r)->path, &(*r)->file_stat)) > 0 ? error_see() : 0;
+		readlink((*r)->name, (*r)->symbolic_link, BUFF_S);
 	}
-	else
-		ft_bzero(&((*r)->symbolic_link), BUFF_S);
+	(*r)->perm[0] = type_file(*r);
 	(*r)->perm[i++] = S_IRUSR & (*r)->file_stat.st_mode ? 'r' : '-';
 	(*r)->perm[i++] = S_IWUSR & (*r)->file_stat.st_mode ? 'w' : '-';
 	(*r)->perm[i++] = S_IXUSR & (*r)->file_stat.st_mode ? 'x' : '-';
@@ -69,6 +84,7 @@ void		make_perm(t_read **r, int folder, t_ls *ls)
 	(*r)->perm[i++] = S_IWOTH & (*r)->file_stat.st_mode ? 'w' : '-';
 	(*r)->perm[i++] = S_IXOTH & (*r)->file_stat.st_mode ? 'x' : '-';
 	(*r)->perm[10] = '\0';
+	make_other_perm(&(*r));
 }
 
 int			verif_name(char *str, t_ls *ls)
@@ -172,7 +188,7 @@ int			insert_read(t_ls **ls, int index, t_save **sv)
 	r->name = ft_strdup((*ls)->read_file->d_name);
 	recover_path(&(r)->path, (*ls), index);
 	(stat(r->path, &(r)->file_stat) > 0) ? error_see() : 0;
-	make_perm(&r, 1, (*ls));
+	make_perm(&r, (*ls));
 	if ((r->pwuser = getpwuid(r->file_stat.st_uid)) == NULL)
 		r->pwuser = 0;
 	((r->grpname = getgrgid(r->file_stat.st_gid)) == NULL) ? error_see() : 0;
@@ -188,7 +204,7 @@ int			check_permission(t_read *r)
 {
 	int		i;
 
-	i = 0;
+	i = 1;
 	while (r->perm[i] == '-')
 		i++;
 	if (i == 10)
@@ -201,7 +217,6 @@ int			insert_read_file(t_ls **ls, int index)
 	t_save	*sv;
 	char	*time_str;
 	t_read	*r;
-
 	r = NULL;
 	if (verif_name((*ls)->options[index], (*ls)))
 		return (0);
@@ -209,7 +224,8 @@ int			insert_read_file(t_ls **ls, int index)
 		return (0);
 	r->ls = (*ls);
 	r->name = ft_strdup((*ls)->options[index]);
-	if ((stat((*ls)->options[index], &(r)->file_stat)) < 0)
+	if ((stat((*ls)->options[index], &(r)->file_stat)) < 0 &&
+			lstat((*ls)->options[index], &(r)->file_stat) < 0)
 	{
 		free(r->name);
 		r->name = NULL;
@@ -217,7 +233,7 @@ int			insert_read_file(t_ls **ls, int index)
 		r = NULL;
 		return (0);
 	}
-	make_perm(&r, 0, (*ls));
+	make_perm(&r, (*ls));
 	if ((r->pwuser = getpwuid(r->file_stat.st_uid)) == NULL)
 		r->pwuser = 0;
 	((r->grpname = getgrgid(r->file_stat.st_gid)) == NULL) ? error_see() : 0;

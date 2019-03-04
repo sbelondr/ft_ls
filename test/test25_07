@@ -1,0 +1,14 @@
+mkdir dirTest25_07
+cd dirTest25_07
+
+touch file8 && chmod 7777 file8
+
+cp ../../ft_ls .
+echo "==============="
+ls -l
+echo "==============="
+./ft_ls -l
+echo "==============="
+
+cd ..
+rm -rf dirTest25_07

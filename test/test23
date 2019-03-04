@@ -1,0 +1,13 @@
+mkdir dirTest23
+cd dirTest23
+
+cp ../../ft_ls .
+
+echo "==============="
+ls -l /usr/share/doc
+echo "==============="
+./ft_ls -l /usr/share/doc
+echo "==============="
+
+cd ..
+rm -rf dirTest23

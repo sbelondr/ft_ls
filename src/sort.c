@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 22:38:09 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/03/03 12:00:45 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/04 17:47:50 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,47 @@ int		ft_cmp_sort_alph(char *str_a, char *str_b, int is_r)
 	return (0);
 }
 
+void	move_sv(t_save **sv)
+{
+	t_read	*a;
+	t_read	*b;
+
+	a = (*sv)->list;
+	b = (*sv)->list->next;
+	if ((*sv)->list_last)
+		(*sv)->list_last->next = b;
+	else
+		(*sv)->p_start->next = b;
+	a->next = b->next;
+	b->next = a;
+}
+
+
 void	ft_sort_alph(t_save *sv, size_t len, int is_r)
 {
-	t_read	*r;
-	t_read	*last;
 	int		i;
+	int		k;
 
-	while (len-- > 0)
+	k = -1;
+	while (++k < (int)len)
+	{
+		i = -1;
+		first_sv(sv);
+		sv->list_last = NULL;
+		while (++i < ((int)len) - 1)
+		{
+			if (!(sv->list) || !(sv->list->next))
+				break ;
+			if (ft_cmp_sort_alph(sv->list->next->name, sv->list->name, is_r) > 0)
+				move_sv(&sv);
+			sv->list_last = sv->list;
+			next_sv(sv);
+		}
+	}
+}
+
+
+/*	while (len-- > 0)
 	{
 		i = 0;
 		first_sv(sv);
@@ -68,8 +102,7 @@ void	ft_sort_alph(t_save *sv, size_t len, int is_r)
 		}
 		if (i == 0)
 			break ;
-	}
-}
+	}*/
 
 /*
  * ** https://stackoverflow.com/questions/8304259/formatting-struct-timespec

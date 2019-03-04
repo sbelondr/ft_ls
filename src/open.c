@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 10:06:04 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/02/25 22:24:51 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/04 09:17:23 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,8 @@ void		recursive(t_save *sv)
 {
 	char	**av;
 	char	*str;
-//	int		i;
-//	int		verif;
 
 	first_sv(sv);
-//	i = -1;
-//	verif = 1;
 	if (!sv)
 		return ;
 	while (sv->list != NULL)
@@ -47,7 +43,6 @@ void		recursive(t_save *sv)
 				av[0] = str;
 				av[1] = str;
 				av[2] = sv->list->path;
-				//verif = ft_ls(3, av);
 				ft_ls(3, av);
 				free(av);
 				av = NULL;

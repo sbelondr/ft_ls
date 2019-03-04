@@ -1,0 +1,29 @@
+mkdir dirTest26
+cd dirTest26
+
+mkdir  dir1 && chmod 0777 dir1
+mkdir  dir2 && chmod 1777 dir2
+mkdir  dir3 && chmod 2777 dir3
+mkdir  dir4 && chmod 3777 dir4
+mkdir  dir5 && chmod 4777 dir5
+mkdir  dir6 && chmod 5777 dir6
+mkdir  dir7 && chmod 6777 dir7
+mkdir  dir9 && chmod 0000 dir9
+mkdir  dir10 && chmod 1000 dir10
+mkdir  dir11 && chmod 2000 dir11
+mkdir  dir12 && chmod 3000 dir12
+mkdir  dir13 && chmod 4000 dir13
+mkdir  dir14 && chmod 5000 dir14
+mkdir  dir15 && chmod 6000 dir15
+mkdir  dir16 && chmod 7000 dir16
+
+cp ../../ft_ls .
+echo "==================="
+ls -l
+echo "==================="
+./ft_ls -l
+echo "==================="
+
+cd ..
+chmod -R 777 dirTest26
+rm -rf dirTest26
