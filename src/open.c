@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 10:06:04 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/03/04 09:17:23 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/05 11:36:46 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,37 @@ void		recursive(t_save *sv)
 	}
 }
 
+/*
+** si ./ft_ls -l /var alors insert_read_file
+** sinon insert_read
+*/
+
+int			choice_insert(t_ls **ls, int index, t_save **sv)
+{
+	int	cnt;
+	int	end;
+
+	cnt = 0;
+	(*ls)->total = 0;
+	while (((*ls)->read_file = readdir((*ls)->rep)) != NULL)
+	{
+		if (*sv)
+		{
+			end = ft_strlen((*ls)->options[index]) - 1;
+			if ((*ls)->options[index][0] == '/' &&
+					(*ls)->options[index][end] != '/')
+			{
+				insert_read_sl(&(*ls), index, &(*sv));
+				cnt = -5;
+				break ;
+			}
+			else
+				cnt += insert_read(&(*ls), index, &(*sv));
+		}
+	}
+	return (cnt);
+}
+
 int			open_ls(t_ls **ls, int index, int see_folder, int first)
 {
 	t_save	*sv;
@@ -65,7 +96,6 @@ int			open_ls(t_ls **ls, int index, int see_folder, int first)
 		error_rep((*ls)->options[index]);
 		return (0);
 	}
-	sv = init_sv();
 	if (see_folder)
 	{
 		if (see_folder == 1 || first == 0)
@@ -73,15 +103,12 @@ int			open_ls(t_ls **ls, int index, int see_folder, int first)
 		else
 			ft_printf("\n%s:\n", (*ls)->options[index]);
 	}
-	cnt = 0;
-	(*ls)->total = 0;
-	while (((*ls)->read_file = readdir((*ls)->rep)) != NULL)
-	{
-		if (sv)
-			cnt += insert_read(&(*ls), index, &sv);
-	}
+	sv = init_sv();
+	cnt = choice_insert(&(*ls), index, &sv);
 	if (sv && cnt > 0)
 		display_read((*ls), sv, 0);
+	else if (sv && cnt == -5)
+		display_read((*ls), sv, -1);
 	if ((closedir((*ls)->rep)) == -1)
 		error_see();
 	(ft_strchr_exist((*ls)->flags, 'R') && cnt > 0) ? recursive(sv) : 0;

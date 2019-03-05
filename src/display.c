@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/14 11:44:53 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/03/04 10:07:35 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/05 11:27:56 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ void	majmin_read(t_read *r)
 	int	major;
 	int	minor;
 
-
-	major= major(r->file_stat.st_rdev);
+	major = major(r->file_stat.st_rdev);
 	minor = minor(r->file_stat.st_rdev);
 	ft_printf("\t%d, %d", major, minor);
 }

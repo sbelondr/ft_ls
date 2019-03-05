@@ -1,0 +1,14 @@
+mkdir dirTest10
+cd dirTest10
+
+cp ../../ft_ls .
+
+mkdir .hdir
+echo "============="
+ls -lRa
+echo "============="
+./ft_ls -lRa
+echo "============="
+
+cd ..
+rm -rf dirTest10

@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 16:07:39 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/03/03 17:26:31 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/05 11:26:30 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	error_option(char c)
 {
 	ft_dprintf(2, "ls: illegal option -- %c\n", c);
-	ft_dprintf(2, "usage: ls [-Ralrt] [file ...]\n");	
+	ft_dprintf(2, "usage: ls [-Ralrt] [file ...]\n");
 	exit(1);
 }
 

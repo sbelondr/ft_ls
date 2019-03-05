@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 09:21:06 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/03/04 09:46:21 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/05 11:33:10 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,20 +56,22 @@ int		parcours(t_ls **ls, int len, int *srt_options, int check)
 		i = -1;
 		while (++i < len)
 		{
-			verif = (srt_options[i] != -1) ?
-				open_ls(&(*ls), srt_options[i], i + 1, check++) : 0;
+			if (srt_options[i] != -1)
+				verif = open_ls(&(*ls), srt_options[i], i + 1, check++);
+			else
+				verif = 0;
 		}
 	}
 	return (verif);
 }
 
-void			ft_dirdel(DIR **check)
+void	ft_dirdel(DIR **check)
 {
 	closedir(*check);
 	(*check) = NULL;
 }
 
-int				sort_options_is_exist(t_ls **ls, int index_option)
+int		sort_options_is_exist(t_ls **ls, int index_option)
 {
 	t_read	*r;
 	DIR		*check;
@@ -162,8 +164,7 @@ int		info_search(char *path_a, char *path_b, t_ls *ls)
 	struct stat	info_b;
 
 	verif = -1;
-	if (stat(path_a, &info) == -1)
-		verif = -2;
+	(stat(path_a, &info) == -1) ? verif = -2 : 0;
 	if (stat(path_b, &info_b) == -1)
 		verif = -2;
 	if (verif == -1 && (S_ISREG(info.st_mode) || S_ISREG(info_b.st_mode)))
@@ -186,8 +187,8 @@ int		info_search(char *path_a, char *path_b, t_ls *ls)
 }
 
 /*
- ** http://manpagesfr.free.fr/man/man2/stat.2.html
- */
+** http://manpagesfr.free.fr/man/man2/stat.2.html
+*/
 
 int		sort_options(t_ls **ls, int len, int *srt_options)
 {
@@ -218,12 +219,12 @@ int		sort_options(t_ls **ls, int len, int *srt_options)
 	return (stock);
 }
 
-int     first_sort_options(t_ls **ls, int len)
+int		first_sort_options(t_ls **ls, int len)
 {
-	int     srt_options[len];
-	int     i;
-	int     k;
-	int     stock;
+	int	srt_options[len];
+	int	i;
+	int	k;
+	int	stock;
 
 	i = -1;
 	while (++i < len)

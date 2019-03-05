@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 22:38:09 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/03/04 17:47:50 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/05 11:34:50 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	move_sv(t_save **sv)
 	b->next = a;
 }
 
-
 void	ft_sort_alph(t_save *sv, size_t len, int is_r)
 {
 	int		i;
@@ -76,37 +75,9 @@ void	ft_sort_alph(t_save *sv, size_t len, int is_r)
 	}
 }
 
-
-/*	while (len-- > 0)
-	{
-		i = 0;
-		first_sv(sv);
-		last = NULL;
-		while (sv->list != NULL)
-		{
-			r = sv->list;
-			sv->list_last = r;
-			while (r)
-			{
-				if (ft_cmp_sort_alph(r->name, sv->list->name, is_r))
-				{
-					i++;
-					sv_move(r, sv, last);
-					break ;
-				}
-				sv->list_last = r;
-				r = r->next;
-			}
-			last = sv->list;
-			next_sv(sv);
-		}
-		if (i == 0)
-			break ;
-	}*/
-
 /*
- * ** https://stackoverflow.com/questions/8304259/formatting-struct-timespec
- * */
+** https://stackoverflow.com/questions/8304259/formatting-struct-timespec
+*/
 
 int		ft_timecmp(t_read *a, t_read *b, int is_r)
 {

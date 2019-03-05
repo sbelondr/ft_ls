@@ -1,0 +1,5 @@
+cp ../ft_ls .
+
+./ft_ls -l /var/run
+
+rm -rf ft_ls

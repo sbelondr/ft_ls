@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 10:17:26 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/02/25 17:20:48 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/05 11:26:47 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ t_save		*init_sv(void)
 	start->pwuser = NULL;
 	start->grpname = NULL;
 	ft_bzero(&(start)->path, BUFF_S);
-//	ft_bzero(&(start)->time_last_edit, BUFF_S);
 	sv->p_start = start;
 	sv->list = NULL;
 	return (sv);

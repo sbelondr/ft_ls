@@ -1,0 +1,14 @@
+mkdir dirSys00
+cd dirSys00
+
+cp ../../ft_ls .
+touch aaa bbb ccc
+
+echo "====================="
+ls -1 aaa\nbbb\nccc\n
+echo "====================="
+ls -1 aaa\nbbb\nccc\n
+echo "====================="
+
+cd ..
+rm -rf dirSys00

@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 12:45:34 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/03/04 10:47:42 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/05 11:38:32 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 #include <time.h>
 #include <sys/xattr.h>
 
-struct dirent*		readdir(DIR* repertoire);
+struct dirent		*readdir(DIR *repertoire);
 
 typedef struct		s_ls
 {
@@ -34,7 +34,7 @@ typedef struct		s_ls
 	DIR				*rep;
 	long long		total;
 	char			**options;
-	struct dirent*	read_file;
+	struct dirent	*read_file;
 	int				column[8];
 }					t_ls;
 
@@ -62,8 +62,8 @@ typedef struct		s_save
 }					t_save;
 
 /*
- ** ft_ls.c
- */
+** ft_ls.c
+*/
 
 int					ft_ls(int ac, char **av);
 
@@ -93,6 +93,7 @@ int					open_ls(t_ls **ls, int index, int see_folder, int first);
 */
 
 int					insert_read(t_ls **ls, int index, t_save **sv);
+int					insert_read_sl(t_ls **ls, int index, t_save **sv);
 int					insert_read_file(t_ls **ls, int index);
 
 /*

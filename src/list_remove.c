@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 10:52:38 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/02/23 10:26:26 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/05 11:25:06 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void		remove_first_sv(t_save *sv)
 
 void		delete_sv(t_save **sv, int cnt)
 {
-	if (sv && *sv && cnt > 0)
+	if (sv && *sv && (cnt > 0 || cnt == -5))
 	{
 		first_sv(*sv);
 		while ((*sv)->list->next != NULL)

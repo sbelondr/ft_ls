@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 09:07:40 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/02/25 21:11:30 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/05 11:33:54 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		verif_flag(t_ls **ls, char *str)
 
 	flags = ft_strdup("1lRrats");
 	i = 0;
-	len  = ft_strlen((*ls)->flags);
+	len = ft_strlen((*ls)->flags);
 	while (str[++i])
 	{
 		if (ft_strchr_exist(flags, str[i]))
@@ -40,8 +40,8 @@ int		verif_flag(t_ls **ls, char *str)
 }
 
 /*
- ** flags: l -> display.c | R -> recursive.c | a -> list | r, t -> sort.c
- */
+** flags: l -> display.c | R -> recursive.c | a -> list | r, t -> sort.c
+*/
 
 int		parser(int ac, char **flags, t_ls **ls)
 {
