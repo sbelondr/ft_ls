@@ -25,7 +25,12 @@ FLAG = -Wall -Wextra
 
 DEBUG = -g3
 
-all: $(NAME)
+MKDIR = mkdir -p
+
+all: directories $(NAME)
+
+directories:
+	@$(MKDIR) obj
 
 $(NAME): $(OBJ)
 	@make -C libft

@@ -21,7 +21,8 @@ STR = ft_printf.c \
 	  add_float.c \
 	  apply_arg_s.c \
 	  apply_arg_n.c \
-	  apply_arg_convert.c
+	  apply_arg_convert.c \
+	  prepare.c
 
 FILE = $(STR)
 

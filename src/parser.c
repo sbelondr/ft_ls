@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 09:07:40 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/03/05 11:33:54 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/05 21:06:36 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,27 @@ int		verif_flag(t_ls **ls, char *str)
 	return (0);
 }
 
+int		fill_options(t_ls **ls, char **flags, int ac, int i)
+{
+	int	j;
+
+	j = -1;
+	if ((ac - i) > 0)
+	{
+		while (i < ac && flags[i])
+			((*ls)->options)[++j] = flags[i++];
+	}
+	else
+	{
+		if (!(((*ls)->options)[0] = (char*)malloc(sizeof(char) * 2)))
+			return (-1);
+		((*ls)->options)[0][0] = '.';
+		((*ls)->options)[0][1] = '\0';
+	}
+	j += 1;
+	return (j);
+}
+
 /*
 ** flags: l -> display.c | R -> recursive.c | a -> list | r, t -> sort.c
 */
@@ -63,19 +84,6 @@ int		parser(int ac, char **flags, t_ls **ls)
 	(j == 0) ? j = 1 : 0;
 	if (!((*ls)->options = (char**)malloc((sizeof(char*) * j) + 1)))
 		return (-1);
-	j = -1;
-	if ((ac - i) > 0)
-	{
-		while (i < ac && flags[i])
-			((*ls)->options)[++j] = flags[i++];
-	}
-	else
-	{
-		if (!(((*ls)->options)[0] = (char*)malloc(sizeof(char) * 2)))
-			return (-1);
-		((*ls)->options)[0][0] = '.';
-		((*ls)->options)[0][1] = '\0';
-	}
-	j += 1;
+	j = fill_options(&(*ls), flags, ac, i);
 	return (j);
 }

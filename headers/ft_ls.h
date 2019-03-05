@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/13 12:45:34 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/03/05 11:38:32 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/05 15:24:55 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int					open_ls(t_ls **ls, int index, int see_folder, int first);
 */
 
 int					insert_read(t_ls **ls, int index, t_save **sv);
-int					insert_read_sl(t_ls **ls, int index, t_save **sv);
+int					insert_read_sl(t_ls **ls, int index);
 int					insert_read_file(t_ls **ls, int index);
 
 /*

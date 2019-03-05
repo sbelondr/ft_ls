@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 10:49:40 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/03/05 11:35:42 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/05 21:56:29 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void		make_other_perm(t_read **r)
 void		make_perm(t_read **r, t_ls *ls)
 {
 	int		i;
+	int		verif;
 
 	i = 1;
 	ft_bzero(&((*r)->symbolic_link), BUFF_S);
@@ -71,9 +72,9 @@ void		make_perm(t_read **r, t_ls *ls)
 			S_ISLNK((*r)->file_stat.st_mode))
 	{
 		(lstat((*r)->path, &(*r)->file_stat)) > 0 ? error_see() : 0;
-		readlink((*r)->path, (*r)->symbolic_link, BUFF_S);
-		if ((*r)->symbolic_link[0] == '\0')
-			readlink((*r)->path, (*r)->symbolic_link, BUFF_S);
+		verif = readlink((*r)->path, (*r)->symbolic_link, BUFF_S);
+		if (verif < 0)
+			readlink((*r)->name, (*r)->symbolic_link, BUFF_S);
 	}
 	(*r)->perm[0] = type_file(*r);
 	(*r)->perm[i++] = S_IRUSR & (*r)->file_stat.st_mode ? 'r' : '-';
@@ -208,21 +209,20 @@ int			check_permission(t_read *r)
 	return (1);
 }
 
-int			insert_read_sl(t_ls **ls, int index, t_save **sv)
+int			insert_read_sl(t_ls **ls, int index)
 {
+	t_save	*sv;
 	char	*time_str;
 	t_read	*r;
 
 	r = NULL;
-	if (verif_name((*ls)->options[index], (*ls)))
-		return (0);
-	if (!(r = (t_read*)malloc(sizeof(t_read) * 1)))
+	if (verif_name((*ls)->options[index], (*ls)) ||
+			!(r = (t_read*)malloc(sizeof(t_read) * 1)))
 		return (0);
 	r->ls = (*ls);
 	r->name = ft_strdup((*ls)->options[index]);
 	ft_cpy_str(&(r->path), r->name);
-	if (lstat(r->name, &(r)->file_stat) > 0)
-		error_see();
+	(lstat(r->name, &(r)->file_stat) > 0) ? error_see() : 0;
 	make_perm(&r, (*ls));
 	if ((r->pwuser = getpwuid(r->file_stat.st_uid)) == NULL)
 		r->pwuser = 0;
@@ -230,9 +230,26 @@ int			insert_read_sl(t_ls **ls, int index, t_save **sv)
 	time_str = ctime(&(r)->file_stat.st_mtime);
 	split_time(time_str, &r);
 	(*ls)->total += add_total(&r);
-	insert_sv(&(*sv), r);
-	cnt_column(&(*ls), r);
+	sv = init_sv();
+	insert_sv(&sv, r);
+	check_permission(r) ? display_read((*ls), sv, -1) : error_permissions(r);
+	delete_sv(&sv, 1);
+	//ft_putchar('\n');
 	return (1);
+}
+
+int			access_stat(t_ls **ls, t_read **r, int index)
+{
+	if ((stat((*ls)->options[index], &(*r)->file_stat)) < 0 &&
+			lstat((*ls)->options[index], &(*r)->file_stat) < 0)
+	{
+		free((*r)->name);
+		(*r)->name = NULL;
+		free(*r);
+		*r = NULL;
+		return (1);
+	}
+	return (0);
 }
 
 int			insert_read_file(t_ls **ls, int index)
@@ -242,21 +259,13 @@ int			insert_read_file(t_ls **ls, int index)
 	t_read	*r;
 
 	r = NULL;
-	if (verif_name((*ls)->options[index], (*ls)))
-		return (0);
-	if (!(r = (t_read*)malloc(sizeof(t_read) * 1)))
+	if (verif_name((*ls)->options[index], (*ls)) ||
+			!(r = (t_read*)malloc(sizeof(t_read) * 1)))
 		return (0);
 	r->ls = (*ls);
 	r->name = ft_strdup((*ls)->options[index]);
-	if ((stat((*ls)->options[index], &(r)->file_stat)) < 0 &&
-			lstat((*ls)->options[index], &(r)->file_stat) < 0)
-	{
-		free(r->name);
-		r->name = NULL;
-		free(r);
-		r = NULL;
+	if (access_stat(&(*ls), &r, index))
 		return (0);
-	}
 	make_perm(&r, (*ls));
 	if ((r->pwuser = getpwuid(r->file_stat.st_uid)) == NULL)
 		r->pwuser = 0;

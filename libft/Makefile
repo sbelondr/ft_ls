@@ -36,7 +36,12 @@ OBJ = $(SRC:%.c=$(DIROBJ)/%.o)
 
 NAME = libft.a
 
-all: $(NAME)
+MKDIR = mkdir -p
+
+all: directories $(NAME)
+
+directories:
+		@$(MKDIR) obj
 
 $(NAME): $(OBJ)
 	@make -C src/ft_printf

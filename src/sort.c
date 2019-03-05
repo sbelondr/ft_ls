@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 22:38:09 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/03/05 11:34:50 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/05 16:39:29 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ void	ft_sort_alph(t_save *sv, size_t len, int is_r)
 		{
 			if (!(sv->list) || !(sv->list->next))
 				break ;
-			if (ft_cmp_sort_alph(sv->list->next->name, sv->list->name, is_r) > 0)
+			if (ft_cmp_sort_alph(sv->list->next->name,
+						sv->list->name, is_r) > 0)
 				move_sv(&sv);
 			sv->list_last = sv->list;
 			next_sv(sv);

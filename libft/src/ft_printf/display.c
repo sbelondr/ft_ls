@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/26 17:33:13 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/01/27 17:14:05 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/05 21:38:29 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_display_color(char dst[BUFF_S], t_printf **lst)
 {
 	char	*src;
 	char	*tmp;
-	
+
 	if ((*lst)->color == 1)
 		src = ft_strjoin(CL_RED, dst);
 	else if ((*lst)->color == 2)

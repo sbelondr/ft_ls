@@ -6,7 +6,7 @@
 /*   By: sbelondr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 19:42:20 by sbelondr          #+#    #+#             */
-/*   Updated: 2019/02/21 17:40:12 by sbelondr         ###   ########.fr       */
+/*   Updated: 2019/03/05 21:41:53 by sbelondr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,15 @@ char				ft_binary_to_char(t_u64 nb);
 int					ft_printf(const char *format, ...);
 int					ft_dprintf(int fd, const char *format, ...);
 int					ft_cprintf(int fd, int color, const char *format, ...);
+
+/*
+** prepare.c
+*/
+
+void				ft_blank_list(t_printf **lst);
+void				ft_reset_value(t_printf **lst);
+char				*insert_format(const char *e);
+int					ft_prepare(const char *format, t_printf **lst);
 
 /*
 ** parser.c
