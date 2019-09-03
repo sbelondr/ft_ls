@@ -1,54 +1,130 @@
-SRC = main.c \
-	  open.c \
-	  list.c \
-	  sort.c \
-	  ft_ls.c \
-	  error.c \
-	  parser.c \
-	  insert.c \
-	  display.c \
-	  list_remove.c
+# ---------- #
+# Debug mode #
+# ---------- #
 
-DIRSRC = src
+DEBUG = no
 
-DIROBJ = obj
+# --------- #
+# Directory #
+# --------- #
 
-HEAD = ft_ls.h
+LIBDIR = libft/
+PATHLIBDIR = libft/libs/
+SRCDIR = srcs/
+OBJDIR = objs/
+INCDIR = includes/
+INCLIBDIR = libft/includes/
 
-LIBRARY = -L./libft -lft
+VPATH = objs:\
+		srcs
+
+# ------------------ #
+# Compiler and flags #
+# ------------------ #
+
+CC = cc
+ifeq ($(DEBUG), yes)
+	CFLAGS = -Wall -Wextra -g3
+else
+	CFLAGS = -Wall -Wextra -Werror
+endif
+CPPFLAGS = -I $(INCDIR) -I $(INCLIBDIR)
+LDLIBS = -lft
+LDFLAGS = -L $(PATHLIBDIR)
+LFLAGS = -lncurses
+
+# --------------- #
+# Different names #
+# --------------- #
 
 NAME = ft_ls
 
-OBJ = $(SRC:%.c=$(DIROBJ)/%.o)
+SRCS_NAMES = display.c\
+						 error.c\
+						 ft_ls.c\
+						 insert.c\
+						 list.c\
+						 list_remove.c\
+						 main.c\
+						 open.c\
+						 parser.c\
+						 sort.c
 
-FLAG = -Wall -Wextra
+OBJS_NAMES = $(SRCS_NAMES:.c=.o)
+HEADERS_NAMES = ft_ls.h
+LIBS_NAMES = libft.a
 
-DEBUG = -g3
+OBJ = $(addprefix $(OBJDIR), $(OBJS_NAMES))
+HEADERS = $(addprefix $(INCDIR), $(HEADERS_NAMES))
+LIBS = $(addprefix $(PATHLIBDIR), $(LIBS_NAMES))
 
-MKDIR = mkdir -p
+# ----------------- #
+# Command variables #
+# ----------------- #
 
-all: directories $(NAME)
+CREATE = mkdir -p
+DEL = /bin/rm -rf
+PRINT = printf
+PHONY = all clean cleans fclean re libs cleanlibs fcleanlibs lldb norm help
+REMOVE = "\r\033[K"
+FUNC = "%-60b\r"
 
-directories:
-	@$(MKDIR) obj
+# PROGRESS BAR | Original author Cpirlot
+T = $(words $(OBJ))
+N = 0
+C = $(words $N)$(eval N := x $N)
+ECHO = "[`expr $C  '*' 100 / $T`%]"
 
-$(NAME): $(OBJ)
-	@make -C libft
-	@gcc $(FLAG) $(DEBUG) $(OBJ) -o $(NAME) $(LIBRARY)
+# ----- #
+# Rules #
+# ----- #
 
+all : libs $(NAME)
 
-$(DIROBJ)/%.o: $(DIRSRC)/%.c
-	@gcc -o $@ $(FLAG) $(DEBUG) -c $<
-	@echo "\033[36mft_ls\033[0m $*: \033[32mOk\033[0m"
+ifeq ($(DEBUG), yes)
+	@$(PRINT) "Debug mode : on\n"
+else
+	@$(PRINT) "Debug mode : off\n"
+endif
 
-clean:
-	@make -C libft clean
-	@rm -f $(OBJ) $(EXEC)
-	@echo "rm -f obj & $(EXEC): \033[33mOk\033[0m"
+$(NAME) : $(LIBS) $(OBJS_NAMES)
+	@$(CC) -o $@ $(OBJ) $(LDFLAGS) $(LDLIBS) $(LFLAGS) $(CFLAGS) $(CPPFLAGS)
+	@$(PRINT) $(REMOVE)"Executable built\n"
 
-fclean: clean
-	@make -C libft fclean
-	@rm -f $(NAME)
-	@echo "rm -f: \033[33mOk\033[0m"
+libs :
+	@$(MAKE) -j3 -C $(LIBDIR)
 
-re: fclean $(NAME)
+%.o : %.c $(HEADERS)
+	@$(CREATE) $(OBJDIR)
+	@$(CC) -o $(OBJDIR)$@ -c $< $(CFLAGS) $(CPPFLAGS)
+
+clean : cleanlibs
+	@$(DEL) $(OBJDIR)
+	@$(PRINT) ".o file deleted\n"
+
+cleans :
+	@$(DEL) $(OBJDIR)
+	@$(PRINT) ".o file deleted\n"
+
+fclean : cleans fcleanlibs
+	@$(DEL) $(NAME)
+	@$(PRINT) "Executable destroyed\n"
+
+cleanlibs :
+	@$(MAKE) -C $(LIBDIR) clean
+
+fcleanlibs :
+	@$(MAKE) -C $(LIBDIR) fclean
+
+lldb :
+	@lldb ./$(NAME)
+
+norm :
+	@norminette ./$(NAME)
+
+re : fclean all
+
+help :
+	@$(PRINT) "Rules available : all, clean, cleans, fclean, re, libs, cleanlibs, fcleanlibs, lldb, norm and help\n"
+
+.PHONY : $(PHONY)
